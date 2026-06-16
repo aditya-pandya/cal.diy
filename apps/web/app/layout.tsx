@@ -19,7 +19,6 @@ const newsreaderFont = Newsreader({
   variable: "--font-cal",
   preload: true,
   display: "swap",
-  weight: ["500", "600", "700"],
   style: ["normal", "italic"],
   axes: ["opsz"],
 });
