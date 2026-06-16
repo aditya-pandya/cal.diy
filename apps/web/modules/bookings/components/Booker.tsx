@@ -375,23 +375,7 @@ const BookerComponent = ({
                   extraDays={layout === BookerLayouts.COLUMN_VIEW ? columnViewExtraDays.current : extraDays}
                   isMobile={isMobile}
                   nextSlots={nextSlots}
-                  renderOverlay={() => {
-                    if (isEmbed) return null;
-                    return (
-                      <OverlayCalendar
-                        isOverlayCalendarEnabled={isOverlayCalendarEnabled}
-                        connectedCalendars={connectedCalendars}
-                        overlayBusyDates={overlayBusyDates}
-                        onToggleCalendar={onToggleCalendar}
-                        hasSession={hasSession}
-                        handleClickContinue={onClickOverlayContinue}
-                        handleSwitchStateChange={onOverlaySwitchStateChange}
-                        handleClickNoCalendar={() => {
-                          onOverlayClickNoCalendar();
-                        }}
-                      />
-                    );
-                  }}
+                  renderOverlay={() => null}
                 />
               )}
             </BookerSection>
