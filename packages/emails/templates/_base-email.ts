@@ -1,4 +1,3 @@
-import process from "node:process";
 import dayjs from "@calcom/dayjs";
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
 import isSmsCalEmail from "@calcom/lib/isSmsCalEmail";
