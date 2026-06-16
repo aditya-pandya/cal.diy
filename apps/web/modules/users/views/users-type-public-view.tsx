@@ -29,6 +29,17 @@ function Type({ slug, user, isEmbed, booking, isBrandingHidden, eventData, orgBa
 
   return (
     <BookingPageErrorBoundary>
+      {!isEmbed && (
+        <header className="flex justify-center pt-6 pb-2">
+          <a
+            href="https://aditya.pandya.co"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-cal italic text-sm text-subtle hover:text-default transition-colors duration-200">
+            Aditya Pandya
+          </a>
+        </header>
+      )}
       <main className={getBookerWrapperClasses({ isEmbed: !!isEmbed })}>
         <Booker
           username={user}
@@ -49,17 +60,6 @@ function Type({ slug, user, isEmbed, booking, isBrandingHidden, eventData, orgBa
           )}
         />
       </main>
-      {!isEmbed && (
-        <footer className="py-8 text-center">
-          <a
-            href="https://aditya.pandya.co"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-cal italic text-sm text-muted hover:text-default transition-colors duration-200">
-            Aditya Pandya
-          </a>
-        </footer>
-      )}
     </BookingPageErrorBoundary>
   );
 }
