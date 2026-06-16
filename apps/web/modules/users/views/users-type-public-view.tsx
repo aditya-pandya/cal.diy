@@ -49,6 +49,17 @@ function Type({ slug, user, isEmbed, booking, isBrandingHidden, eventData, orgBa
           )}
         />
       </main>
+      {!isEmbed && (
+        <footer className="py-8 text-center">
+          <a
+            href="https://aditya.pandya.co"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-cal italic text-sm text-muted hover:text-default transition-colors duration-200">
+            Aditya Pandya
+          </a>
+        </footer>
+      )}
     </BookingPageErrorBoundary>
   );
 }
