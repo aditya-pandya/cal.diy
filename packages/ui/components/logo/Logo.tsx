@@ -22,8 +22,8 @@ export function Logo({
         ) : (
           <img
             className={classNames(small ? "h-4 w-auto" : "h-5 w-auto", "dark:invert")}
-            alt="Cal.diy"
-            title="Cal.diy"
+            alt={APP_NAME}
+            title={APP_NAME}
             src={src}
           />
         )}
