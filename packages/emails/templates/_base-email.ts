@@ -1,14 +1,13 @@
-import { decodeHTML } from "entities";
-import { z } from "zod";
-
+import process from "node:process";
 import dayjs from "@calcom/dayjs";
 import { FeaturesRepository } from "@calcom/features/flags/features.repository";
 import isSmsCalEmail from "@calcom/lib/isSmsCalEmail";
-import { serverConfig } from "@calcom/lib/serverConfig";
 import { getServerErrorFromUnknown } from "@calcom/lib/server/getServerErrorFromUnknown";
+import { serverConfig } from "@calcom/lib/serverConfig";
 import { setTestEmail } from "@calcom/lib/testEmails";
 import { prisma } from "@calcom/prisma";
-
+import { decodeHTML } from "entities";
+import { z } from "zod";
 import { sanitizeDisplayName } from "../lib/sanitizeDisplayName";
 
 export default class BaseEmail {
@@ -71,6 +70,31 @@ export default class BaseEmail {
       },
       ...(parseSubject.success && { subject: decodeHTML(parseSubject.data) }),
     };
+
+    // Resend REST API path — Vercel blocks outbound SMTP (port 465) so bypass nodemailer entirely
+    if (process.env.RESEND_API_KEY) {
+      const resendRes = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          from: payloadWithUnEscapedSubject.from,
+          to: [payloadWithUnEscapedSubject.to],
+          subject: payloadWithUnEscapedSubject.subject,
+          html: "html" in payloadWithUnEscapedSubject ? payloadWithUnEscapedSubject.html : undefined,
+          text: "text" in payloadWithUnEscapedSubject ? payloadWithUnEscapedSubject.text : undefined,
+        }),
+      });
+      if (!resendRes.ok) {
+        const resendErr = await resendRes.json();
+        console.error("Resend API error", resendErr);
+        throw new Error(`Resend API error: ${JSON.stringify(resendErr)}`);
+      }
+      return;
+    }
+
     const { createTransport } = await import("nodemailer");
     await new Promise((resolve, reject) =>
       createTransport(this.getMailerOptions().transport).sendMail(
