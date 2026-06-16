@@ -29,37 +29,54 @@ function Type({ slug, user, isEmbed, booking, isBrandingHidden, eventData, orgBa
 
   return (
     <BookingPageErrorBoundary>
-      {!isEmbed && (
-        <header className="flex justify-center pt-6 pb-2">
-          <a
-            href="https://aditya.pandya.co"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-cal italic text-sm text-subtle hover:text-default transition-colors duration-200">
-            Aditya Pandya
-          </a>
-        </header>
+      {!isEmbed ? (
+        <div className="flex h-screen flex-col">
+          <header className="flex shrink-0 items-center px-10 py-[18px]">
+            <a
+              href="https://aditya.pandya.co"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-sans text-[11px] font-semibold uppercase tracking-[0.3em] text-default hover:text-emphasis transition-colors duration-300">
+              Aditya Pandya
+            </a>
+          </header>
+          <main className="flex flex-1 items-center justify-center overflow-auto">
+            <Booker
+              username={user}
+              eventSlug={slug}
+              bookingData={booking}
+              hideBranding={isBrandingHidden}
+              eventData={eventData}
+              entity={{ ...eventData.entity, eventTypeId: eventData?.id }}
+              durationConfig={eventData.metadata?.multipleDuration}
+              orgBannerUrl={orgBannerUrl}
+              duration={getMultipleDurationValue(
+                eventData.metadata?.multipleDuration,
+                searchParams?.get("duration"),
+                eventData.length
+              )}
+            />
+          </main>
+        </div>
+      ) : (
+        <main className={getBookerWrapperClasses({ isEmbed: true })}>
+          <Booker
+            username={user}
+            eventSlug={slug}
+            bookingData={booking}
+            hideBranding={isBrandingHidden}
+            eventData={eventData}
+            entity={{ ...eventData.entity, eventTypeId: eventData?.id }}
+            durationConfig={eventData.metadata?.multipleDuration}
+            orgBannerUrl={orgBannerUrl}
+            duration={getMultipleDurationValue(
+              eventData.metadata?.multipleDuration,
+              searchParams?.get("duration"),
+              eventData.length
+            )}
+          />
+        </main>
       )}
-      <main className={getBookerWrapperClasses({ isEmbed: !!isEmbed })}>
-        <Booker
-          username={user}
-          eventSlug={slug}
-          bookingData={booking}
-          hideBranding={isBrandingHidden}
-          eventData={eventData}
-          entity={{ ...eventData.entity, eventTypeId: eventData?.id }}
-          durationConfig={eventData.metadata?.multipleDuration}
-          orgBannerUrl={orgBannerUrl}
-          /* TODO: Currently unused, evaluate it is needed-
-           *       Possible alternative approach is to have onDurationChange.
-           */
-          duration={getMultipleDurationValue(
-            eventData.metadata?.multipleDuration,
-            searchParams?.get("duration"),
-            eventData.length
-          )}
-        />
-      </main>
     </BookingPageErrorBoundary>
   );
 }
