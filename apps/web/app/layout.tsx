@@ -3,8 +3,7 @@ import { loadTranslations } from "@calcom/i18n/server";
 import { IconSprites } from "@calcom/ui/components/icon";
 import { buildLegacyRequest } from "@lib/buildLegacyCtx";
 import { dir } from "i18next";
-import { Inter } from "next/font/google";
-import localFont from "next/font/local";
+import { Manrope, Newsreader } from "next/font/google";
 import { cookies, headers } from "next/headers";
 import Script from "next/script";
 import type React from "react";
@@ -14,13 +13,15 @@ import { AppRouterI18nProvider } from "./AppRouterI18nProvider";
 import { Providers } from "./providers";
 import { SpeculationRules } from "./SpeculationRules";
 
-const interFont = Inter({ subsets: ["latin"], variable: "--font-sans", preload: true, display: "swap" });
-const calFont = localFont({
-  src: "../fonts/CalSans-SemiBold.woff2",
+const manropeFont = Manrope({ subsets: ["latin"], variable: "--font-sans", preload: true, display: "swap" });
+const newsreaderFont = Newsreader({
+  subsets: ["latin"],
   variable: "--font-cal",
   preload: true,
-  display: "block",
-  weight: "600",
+  display: "swap",
+  weight: ["500", "600", "700"],
+  style: ["normal", "italic"],
+  axes: ["opsz"],
 });
 
 export const viewport = {
@@ -32,7 +33,7 @@ export const viewport = {
   themeColor: [
     {
       media: "(prefers-color-scheme: light)",
-      color: "#f9fafb",
+      color: "#f5f2ec",
     },
     {
       media: "(prefers-color-scheme: dark)",
@@ -116,8 +117,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head nonce={nonce}>
         <style>{`
           :root {
-            --font-sans: ${interFont.style.fontFamily.replace(/\'/g, "")}, system-ui;
-            --font-cal: ${calFont.style.fontFamily.replace(/\'/g, "")};
+            --font-sans: ${manropeFont.style.fontFamily.replace(/\'/g, "")}, system-ui;
+            --font-cal: ${newsreaderFont.style.fontFamily.replace(/\'/g, "")};
           }
         `}</style>
         {process.env.NODE_ENV === "development" && (
