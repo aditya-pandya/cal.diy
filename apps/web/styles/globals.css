@@ -422,3 +422,146 @@ html[dir="rtl"] .react-tel-input .flag-dropdown {
   left: auto !important;
   right: 0 !important;
 }
+
+/* Zilla Slab ships in one weight (300); never fake a bold of it. */
+.font-cal {
+  font-synthesis-weight: none;
+}
+
+/* The public booking page, dressed as aditya.pandya.co: a golden field, the site's bar and headline,
+   and the booker as a cream paper sheet. Scoped to .ap-booking (users-type-public-view.tsx). */
+html:has(.ap-booking),
+body:has(.ap-booking) {
+  background: #ff7b1c;
+}
+.ap-booking {
+  --ap-field: #ff7b1c;
+  --ap-ink: #2b0f24;
+  --ap-paper-ink: #1c1030;
+  --ap-acc: #5900e4;
+  --ap-gut: clamp(16px, 5vw, 84px);
+  display: flex;
+  min-height: 100vh;
+  min-height: 100svh;
+  flex-direction: column;
+  background: var(--ap-field);
+  color: var(--ap-ink);
+  font-family: var(--font-sans);
+}
+.ap-bar {
+  display: flex;
+  min-height: 56px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: env(safe-area-inset-top, 0px) max(var(--ap-gut), env(safe-area-inset-right, 0px)) 0
+    max(var(--ap-gut), env(safe-area-inset-left, 0px));
+  font-size: 14px;
+  font-weight: 500;
+}
+.ap-me {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 9px;
+  color: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.ap-me svg {
+  width: 22px;
+  height: 12px;
+  overflow: visible;
+}
+.ap-me path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.ap-back {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 5px;
+}
+.ap-hero {
+  padding: clamp(8px, 3vh, 28px) var(--ap-gut) 0;
+  text-align: center;
+}
+.ap-hero h1 {
+  margin: 0;
+  color: inherit;
+  font-family: var(--font-cal);
+  font-size: clamp(48px, 11vw, 92px);
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+.ap-c2 {
+  margin: 0 0.01em 0 -0.01em;
+  color: var(--ap-acc);
+  font-family: var(--font-script);
+  font-size: 1.36em;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0;
+  -webkit-text-stroke-width: 0.0135em;
+}
+.ap-stage {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  padding: clamp(20px, 4vh, 40px) var(--ap-gut) clamp(32px, 6vh, 64px);
+}
+/* the booker sits in the stage's padding rather than its own month-view margins */
+.ap-booking .main {
+  margin-block: 0;
+}
+.ap-booking [data-testid="booker-container"] {
+  border: 0;
+  border-radius: 10px;
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.08),
+    0 30px 80px -30px rgba(20, 10, 40, 0.55);
+}
+/* month view's only header item is the layout switcher, fixed to the corner of the page */
+.ap-booking .\[grid-area\:header\].fixed {
+  display: none;
+}
+.ap-booking [data-testid="event-title"] {
+  font-family: var(--font-cal);
+  font-synthesis-weight: none;
+  font-size: 30px;
+  font-weight: 300;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.ap-booking [data-testid="selected-month-label"],
+.ap-booking [data-testid="selected-month-label"] + * {
+  font-family: var(--font-cal);
+  font-size: 22px;
+  font-weight: 300;
+  font-synthesis-weight: none;
+  letter-spacing: -0.01em;
+}
+.ap-booking [data-testid="time"] {
+  min-height: 42px;
+  border: 1.5px solid var(--ap-paper-ink);
+  border-radius: 9999px;
+  background: transparent;
+  color: var(--ap-paper-ink);
+  font-weight: 600;
+}
+@media (hover: hover) {
+  .ap-booking [data-testid="time"]:not([disabled]):hover {
+    background: var(--ap-paper-ink);
+    color: #fff8ee;
+  }
+}
