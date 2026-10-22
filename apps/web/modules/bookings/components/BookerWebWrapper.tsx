@@ -193,7 +193,8 @@ const BookerWebWrapperComponent = (props: BookerWebWrapperAtomProps): JSX.Elemen
   useBrandColors({
     brandColor: event.data?.profile.brandColor ?? DEFAULT_LIGHT_BRAND_COLOR,
     darkBrandColor: event.data?.profile.darkBrandColor ?? DEFAULT_DARK_BRAND_COLOR,
-    theme: event.data?.profile.theme,
+    // Light unless the organizer chose a theme: the booking page is paper and ink like aditya.pandya.co.
+    theme: event.data?.profile.theme ?? "light",
   });
 
   useEffect(() => {

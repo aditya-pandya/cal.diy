@@ -3,7 +3,7 @@ import { loadTranslations } from "@calcom/i18n/server";
 import { IconSprites } from "@calcom/ui/components/icon";
 import { buildLegacyRequest } from "@lib/buildLegacyCtx";
 import { dir } from "i18next";
-import { Manrope, Newsreader } from "next/font/google";
+import localFont from "next/font/local";
 import { cookies, headers } from "next/headers";
 import Script from "next/script";
 import type React from "react";
@@ -13,14 +13,28 @@ import { AppRouterI18nProvider } from "./AppRouterI18nProvider";
 import { Providers } from "./providers";
 import { SpeculationRules } from "./SpeculationRules";
 
-const manropeFont = Manrope({ subsets: ["latin"], variable: "--font-sans", preload: true, display: "swap" });
-const newsreaderFont = Newsreader({
-  subsets: ["latin"],
+// The type of aditya.pandya.co, self-hosted: Bricolage Grotesque (variable) for text, Zilla Slab 300
+// for headings, and Licorice for the one script letter in a headline, which is never preloaded.
+const sansFont = localFont({
+  src: "../fonts/BricolageGrotesque-Latin.woff2",
+  weight: "200 700",
+  variable: "--font-sans",
+  preload: true,
+  display: "swap",
+});
+const headingFont = localFont({
+  src: "../fonts/ZillaSlab-300-Latin.woff2",
+  weight: "300",
   variable: "--font-cal",
   preload: true,
   display: "swap",
-  style: ["normal", "italic"],
-  axes: ["opsz"],
+});
+const scriptFont = localFont({
+  src: "../fonts/Licorice-Latin.woff2",
+  weight: "400",
+  variable: "--font-script",
+  preload: false,
+  display: "swap",
 });
 
 export const viewport = {
@@ -114,8 +128,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head nonce={nonce}>
         <style>{`
           :root {
-            --font-sans: ${manropeFont.style.fontFamily.replace(/\'/g, "")}, system-ui;
-            --font-cal: ${newsreaderFont.style.fontFamily.replace(/\'/g, "")};
+            --font-sans: ${sansFont.style.fontFamily.replace(/'/g, "")}, system-ui;
+            --font-cal: ${headingFont.style.fontFamily.replace(/'/g, "")};
+            --font-script: ${scriptFont.style.fontFamily.replace(/'/g, "")}, cursive;
           }
         `}</style>
         {process.env.NODE_ENV === "development" && (

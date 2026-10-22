@@ -6,12 +6,19 @@ import type { PageProps, Params, SearchParams } from "app/_types";
 import { generateMeetingMetadata } from "app/_utils";
 import { CustomI18nProvider } from "app/CustomI18nProvider";
 import { withAppDirSsr } from "app/WithAppDirSsr";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { cookies, headers } from "next/headers";
 import type React from "react";
 import { cache } from "react";
 import type { PageProps as LegacyPageProps } from "~/users/views/users-type-public-view";
 import LegacyPage from "~/users/views/users-type-public-view";
+
+const SHARE_CARD = {
+  url: "https://aditya.pandya.co/assets/images/og-card.png?v=20261012",
+  width: 1200,
+  height: 627,
+  alt: "Aditya Pandya",
+};
 
 const getData: (ctx: ReturnType<typeof buildLegacyCtx>) => Promise<LegacyPageProps> =
   withAppDirSsr<LegacyPageProps>(getServerSideProps);
@@ -68,8 +75,11 @@ export const generateMetadata = async ({ params, searchParams }: PageProps): Pro
   const decodedParams = decodeParams(await params);
   const metadata = await generateMeetingMetadata(
     meeting,
-    (t) => `${rescheduleUid && !!booking ? t("reschedule") : ""} ${title} | ${profileName}`,
-    (t) => `${rescheduleUid ? t("reschedule") : ""} ${title}`,
+    (t) =>
+      [rescheduleUid && !!booking ? t("reschedule") : "", `${title} | ${profileName}`]
+        .filter(Boolean)
+        .join(" "),
+    (t) => [rescheduleUid ? t("reschedule") : "", title].filter(Boolean).join(" "),
     isBrandingHidden,
     WEBAPP_URL,
     `/${decodedParams.user}/${decodedParams.type}`
@@ -77,11 +87,20 @@ export const generateMetadata = async ({ params, searchParams }: PageProps): Pro
 
   return {
     ...metadata,
+    // The generated meeting image goes through the image optimizer, which this deployment turns off
+    // (images.unoptimized), so it answered 400; aditya.pandya.co's own card is used instead.
+    openGraph: { ...metadata.openGraph, images: [SHARE_CARD] },
+    twitter: { card: "summary_large_image", images: [SHARE_CARD.url] },
     robots: {
       follow: !(eventData?.hidden || !isSEOIndexable),
       index: !(eventData?.hidden || !isSEOIndexable),
     },
   };
+};
+
+// The page is the golden field of aditya.pandya.co, so the browser bar matches it.
+export const viewport: Viewport = {
+  themeColor: "#ff7b1c",
 };
 
 export default ServerPage;

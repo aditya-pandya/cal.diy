@@ -1,16 +1,12 @@
 "use client";
 
+import { getBookerWrapperClasses } from "@calcom/features/bookings/Booker/utils/getBookerWrapperClasses";
+import { BookerWebWrapper as Booker } from "@calcom/web/modules/bookings/components/BookerWebWrapper";
+import BookingPageErrorBoundary from "@components/error/BookingPageErrorBoundary";
+import type { inferSSRProps } from "@lib/types/inferSSRProps";
+import type { getServerSideProps } from "@server/lib/[user]/[type]/getServerSideProps";
 import type { EmbedProps } from "app/WithEmbedSSR";
 import { useSearchParams } from "next/navigation";
-
-import { BookerWebWrapper as Booker } from "@calcom/web/modules/bookings/components/BookerWebWrapper";
-import { getBookerWrapperClasses } from "@calcom/features/bookings/Booker/utils/getBookerWrapperClasses";
-
-import type { inferSSRProps } from "@lib/types/inferSSRProps";
-
-import BookingPageErrorBoundary from "@components/error/BookingPageErrorBoundary";
-
-import type { getServerSideProps } from "@server/lib/[user]/[type]/getServerSideProps";
 
 export type PageProps = inferSSRProps<typeof getServerSideProps> & EmbedProps;
 
@@ -30,17 +26,26 @@ function Type({ slug, user, isEmbed, booking, isBrandingHidden, eventData, orgBa
   return (
     <BookingPageErrorBoundary>
       {!isEmbed ? (
-        <div className="flex h-screen flex-col">
-          <header className="flex shrink-0 items-center px-10 py-[18px]">
-            <a
-              href="https://aditya.pandya.co"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-sans text-[11px] font-semibold uppercase tracking-[0.3em] text-default hover:text-emphasis transition-colors duration-300">
-              Aditya Pandya
+        <div className="ap-booking">
+          <header className="ap-bar">
+            <a href="https://aditya.pandya.co" className="ap-me">
+              <svg viewBox="0 0 22 12" aria-hidden="true">
+                <path d="M1.2 4.6 C4.6 1.4 8.4 2.2 11 7.6 C13.4 2.6 17.2 1.2 20.8 3.8" />
+              </svg>
+              <span>Aditya Pandya</span>
+            </a>
+            <a href="https://aditya.pandya.co" className="ap-back">
+              Back to the site
             </a>
           </header>
-          <main className="flex flex-1 items-center justify-center overflow-auto">
+          <div className="ap-hero">
+            <h1>
+              {"Let’s "}
+              <span className="ap-c2">t</span>
+              {"alk."}
+            </h1>
+          </div>
+          <main className="ap-stage">
             <Booker
               username={user}
               eventSlug={slug}
